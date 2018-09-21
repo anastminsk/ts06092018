@@ -4,8 +4,10 @@
   Первым всегда должен быть массив.
 */
 
-function isInArray(arr: any[], ...args: any[]): boolean {
-   return args.every((el: any) => arr.includes(el));
+type sub = string | number;
+
+function isInArray(arr: sub[], ...args: sub[]): boolean {
+   return args.every((el: sub) => arr.includes(el));
  }
 
 /*2)
@@ -18,11 +20,11 @@ function summator(...args: number[]): number;
 function summator(...args: (string | number)[]): number {
     return args.reduce((sum: number, arg: (string | number)) => {
         if (typeof arg === 'string') {
-            arg = parseInt(arg, 10);
+            arg = Number(arg);
         }
         return sum += arg;
     }, 0);
-}    
+}
 
 /*3)
   Написать функцию getUnique(arr), которая принимает аргументом неограниченое число аргументов,
@@ -31,8 +33,8 @@ function summator(...args: (string | number)[]): number {
   в котором они встречаются в оригинальной структуре.
 */
 
-function getUnique(...arr: any[]): any[] {
-    let result: any[] = [];
+function getUnique(...arr: sub[]): sub[] {
+    let result: sub[] = [];
     arr.forEach((el) => {
         if (result.indexOf(el) === -1) {
             result.push(el);
@@ -47,5 +49,11 @@ function getUnique(...arr: any[]): any[] {
  элементы подмассивов берутся из массива data. Оригинальный массив не должен быть изменен.
  */
 
- //Не понятно условие этой задачи. Например, что должна вывести функция в случае data = [1, 2, 3, 4, 5, 6, 7]
- //и data = 3. Что делать с элементами из data, не вошедшими в подмассивы?
+ function toMatrix(data: number[], rowSize: number): number[][] {
+     const matrix: number[][] = [];
+     for (let cursor = 0; cursor < data.length; cursor += rowSize) {
+        const row: number[] = data.slice(cursor, cursor + rowSize);
+        matrix.push(row);
+    }
+     return matrix;
+}
