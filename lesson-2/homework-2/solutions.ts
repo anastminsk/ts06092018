@@ -4,27 +4,39 @@
   Первым всегда должен быть массив.
 */
 
-type sub = string | number;
-
-function isInArray(arr: sub[], ...args: sub[]): boolean {
-   return args.every((el: sub) => arr.includes(el));
+function isInArray(arr: (string | number)[], ...args: (string | number)[]): boolean {
+   return args.every((el: string | number) => arr.includes(el));
  }
+
+//console.log(isInArray([1, 2, 3, 4, 5, 6], 2, 3, 4));
+//console.log(isInArray([1, 'hoh', 3, 4, 5, 6], 2, 3, 4));
 
 /*2)
  Написать функцию summator(), которая сумирует переданые ей аргументы.
  Аргументы могут быть либо строкового либо числового типа. Количество их не ограничено.
 */
 
-function summator(...args: string[]): number;
-function summator(...args: number[]): number;
+function isNumber(a: string | number): a is number {
+    return typeof a !== 'string';
+}
+
 function summator(...args: (string | number)[]): number {
-    return args.reduce((sum: number, arg: (string | number)) => {
-        if (typeof arg === 'string') {
-            arg = Number(arg);
+    return args.reduce<number>((acc: number, next: string | number) => {
+        if (isNumber(next)) {
+            return acc += next;
+        } else {
+            if (!isNaN(parseInt(next))) {
+                return acc += parseInt(next);
+            } else {
+                return acc;
+            }
         }
-        return sum += arg;
     }, 0);
 }
+
+//console.log(summator(1, 2, 3, 4));
+//console.log(summator(1, 10, 2, '3'));
+//console.log(summator(1, 'hoh', 2, '3'));
 
 /*3)
   Написать функцию getUnique(arr), которая принимает аргументом неограниченое число аргументов,
@@ -33,8 +45,8 @@ function summator(...args: (string | number)[]): number {
   в котором они встречаются в оригинальной структуре.
 */
 
-function getUnique(...arr: sub[]): sub[] {
-    let result: sub[] = [];
+function getUnique(...arr: (string | number)[]): (string | number)[] {
+    let result: (string | number)[] = [];
     arr.forEach((el) => {
         if (result.indexOf(el) === -1) {
             result.push(el);
@@ -42,6 +54,8 @@ function getUnique(...arr: sub[]): sub[] {
     });
     return result;
 }
+
+//console.log(getUnique(1, 2, 3, 3, 'four', 5, 'four', 6, 'six', 6));
 
 /*4)
  Написать функцию toMatrix(data, rowSize), которая принимает аргументом массив и число,
@@ -57,3 +71,6 @@ function getUnique(...arr: sub[]): sub[] {
     }
      return matrix;
 }
+
+//console.log(toMatrix([1, 2, 3, 4, 5, 6, 7], 3));
+//console.log(toMatrix([1, 2, 3, 4, 5, 6, 7], 4));
